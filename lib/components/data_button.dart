@@ -21,7 +21,10 @@ class DataButton extends StatelessWidget {
       ),
       onPressed: () => onPressed(),
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30.0,
+          vertical: 10.0,
+        ),
         child: Text(
           textTitle,
           style: TextStyle(
