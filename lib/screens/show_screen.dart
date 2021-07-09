@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:upcloud_app/components/data_button.dart';
 import 'package:upcloud_app/utilities/network.dart';
 import 'package:upcloud_app/components/data_tile.dart';
@@ -11,6 +12,7 @@ class ShowData extends StatefulWidget {
 
 class _ShowDataState extends State<ShowData> {
   List<DataTile> dataTiles = [];
+  bool isShowing = false;
 
   void createTiles() async {
     var data = await Network().getData();
@@ -32,48 +34,55 @@ class _ShowDataState extends State<ShowData> {
   @override
   void initState() {
     super.initState();
+    isShowing = true;
     createTiles();
+    isShowing = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 20.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DataButton(
-                      textTitle: 'Add Data',
-                      onPressed: () {
-                        // Navigator.pop(context);
-                      },
-                      backgroundColor: Color(0xFFFFC19E),
-                    ),
-                    DataButton(
-                      textTitle: 'Show Data',
-                      onPressed: () {
-                        setState(() {
-                          createTiles();
-                        });
-                      },
-                      backgroundColor: Colors.grey.shade300,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Column(
-                  children: dataTiles,
-                ),
-              ],
+      body: LoadingOverlay(
+        isLoading: isShowing,
+        child: SafeArea(
+          child: Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DataButton(
+                        textTitle: 'Add Data',
+                        onPressed: () {
+                          // Navigator.pop(context);
+                        },
+                        backgroundColor: Color(0xFFFFC19E),
+                      ),
+                      DataButton(
+                        textTitle: 'Show Data',
+                        onPressed: () {
+                          setState(() {
+                            isShowing = true;
+                            createTiles();
+                            isShowing = false;
+                          });
+                        },
+                        backgroundColor: Colors.grey.shade300,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Column(
+                    children: dataTiles,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
