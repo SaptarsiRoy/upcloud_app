@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:upcloud_app/components/data_button.dart';
 import 'package:upcloud_app/constants.dart';
+import 'package:upcloud_app/screens/show_screen.dart';
 
 class AddData extends StatelessWidget {
   static const String id = 'AddData';
@@ -26,7 +27,9 @@ class AddData extends StatelessWidget {
                       ),
                       DataButton(
                         textTitle: 'Show Data',
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, ShowData.id);
+                        },
                         backgroundColor: Colors.grey.shade300,
                       ),
                     ],
