@@ -1,153 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:upcloud_app/components/data_button.dart';
+import 'package:upcloud_app/components/data_tile.dart';
 import 'package:upcloud_app/constants.dart';
 import 'package:upcloud_app/screens/show_screen.dart';
+import 'package:upcloud_app/utilities/network.dart';
 
-class AddData extends StatelessWidget {
+// ignore: must_be_immutable
+class AddData extends StatefulWidget {
   static const String id = 'AddData';
+
+  @override
+  _AddDataState createState() => _AddDataState();
+}
+
+class _AddDataState extends State<AddData> {
+  List<DataTile> dataTiles = [];
+
+  bool isShowing = false;
+
+  Future<void> createTiles() async {
+    var data = await Network().getData();
+    for (var item in data) {
+      if (item['name'] != null &&
+          item['contact'] != null &&
+          item['email'] != null &&
+          item['address'] != null) {
+        var tile = DataTile(
+            name: item['name'],
+            email: item['email'],
+            contact: item['contact'],
+            address: item['address']);
+        dataTiles.add(tile);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DataButton(
-                        textTitle: 'Add Data',
-                        onPressed: () {},
+      body: LoadingOverlay(
+        progressIndicator: CircularProgressIndicator(
+          color: Colors.grey.shade600,
+        ),
+        color: Colors.grey.shade400,
+        isLoading: isShowing,
+        child: ListView(
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DataButton(
+                          textTitle: 'Add Data',
+                          onPressed: () {},
+                          backgroundColor: Color(0xFFFFC19E),
+                        ),
+                        DataButton(
+                          textTitle: 'Show Data',
+                          onPressed: () async {
+                            setState(() {
+                              isShowing = true;
+                            });
+                            await createTiles();
+                            setState(() {
+                              isShowing = false;
+                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ShowData(
+                                  dataTiles: dataTiles,
+                                ),
+                              ),
+                            );
+                          },
+                          backgroundColor: Colors.grey.shade300,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 100.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Name: ',
+                            style: kLabelTextStyle,
+                          ),
+                          SizedBox(
+                            width: 30.0,
+                          ),
+                          Expanded(
+                            child: TextFormField(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'E-mail: ',
+                            style: kLabelTextStyle,
+                          ),
+                          SizedBox(
+                            width: 30.0,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Contact: ',
+                            style: kLabelTextStyle,
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Address: ',
+                            style: kLabelTextStyle,
+                          ),
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              keyboardType: TextInputType.streetAddress,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100.0,
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
                         backgroundColor: Color(0xFFFFC19E),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0)),
                       ),
-                      DataButton(
-                        textTitle: 'Show Data',
-                        onPressed: () {
-                          Navigator.pushNamed(context, ShowData.id);
-                        },
-                        backgroundColor: Colors.grey.shade300,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 100.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Name: ',
-                          style: kLabelTextStyle,
-                        ),
-                        SizedBox(
-                          width: 30.0,
-                        ),
-                        Expanded(
-                          child: TextFormField(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'E-mail: ',
-                          style: kLabelTextStyle,
-                        ),
-                        SizedBox(
-                          width: 30.0,
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
+                      onPressed: () {},
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 50.0,
+                            vertical: 10.0,
                           ),
-                        ),
-                      ],
+                          child: Text(
+                            "Save",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                            ),
+                          )),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Contact: ',
-                          style: kLabelTextStyle,
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.phone,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Address: ',
-                          style: kLabelTextStyle,
-                        ),
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.streetAddress,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 100.0,
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color(0xFFFFC19E),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                    ),
-                    onPressed: () {},
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50.0,
-                          vertical: 10.0,
-                        ),
-                        child: Text(
-                          "Save",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.0,
-                          ),
-                        )),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

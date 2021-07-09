@@ -1,89 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:upcloud_app/components/data_button.dart';
-import 'package:upcloud_app/utilities/network.dart';
 import 'package:upcloud_app/components/data_tile.dart';
 
+// ignore: must_be_immutable
 class ShowData extends StatefulWidget {
   static const String id = 'ShowData';
+  List<DataTile> dataTiles;
+  ShowData({this.dataTiles = const []});
   @override
   _ShowDataState createState() => _ShowDataState();
 }
 
 class _ShowDataState extends State<ShowData> {
-  List<DataTile> dataTiles = [];
-  bool isShowing = false;
-
-  void createTiles() async {
-    var data = await Network().getData();
-    for (var item in data) {
-      if (item['name'] != null &&
-          item['contact'] != null &&
-          item['email'] != null &&
-          item['address'] != null) {
-        var tile = DataTile(
-            name: item['name'],
-            email: item['email'],
-            contact: item['contact'],
-            address: item['address']);
-        dataTiles.add(tile);
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isShowing = true;
-    createTiles();
-    isShowing = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LoadingOverlay(
-        isLoading: isShowing,
-        child: SafeArea(
-          child: Expanded(
-            child: SingleChildScrollView(
-              child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 20.0,
+                  DataButton(
+                    textTitle: 'Add Data',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    backgroundColor: Color(0xFFFFC19E),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      DataButton(
-                        textTitle: 'Add Data',
-                        onPressed: () {
-                          // Navigator.pop(context);
-                        },
-                        backgroundColor: Color(0xFFFFC19E),
-                      ),
-                      DataButton(
-                        textTitle: 'Show Data',
-                        onPressed: () {
-                          setState(() {
-                            isShowing = true;
-                            createTiles();
-                            isShowing = false;
-                          });
-                        },
-                        backgroundColor: Colors.grey.shade300,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Column(
-                    children: dataTiles,
+                  DataButton(
+                    textTitle: 'Show Data',
+                    onPressed: () {},
+                    backgroundColor: Colors.grey.shade300,
                   ),
                 ],
               ),
-            ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Column(
+                children: widget.dataTiles,
+              ),
+            ],
           ),
         ),
       ),
