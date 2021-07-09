@@ -16,7 +16,6 @@ class AddData extends StatefulWidget {
 
 class _AddDataState extends State<AddData> {
   List<DataTile> dataTiles = [];
-
   bool isShowing = false;
 
   Future<void> createTiles() async {
@@ -34,6 +33,18 @@ class _AddDataState extends State<AddData> {
         dataTiles.add(tile);
       }
     }
+  }
+
+  String validateEmail(value) {
+    bool emailValidate = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value.toString());
+    return (emailValidate ? '' : 'Enter a correct email').toString();
+  }
+
+  String validateContact(value) {
+    bool contactValidate = value.toString().length == 10;
+    return (contactValidate ? '' : 'Enter a 10 digit phone number');
   }
 
   @override
@@ -121,6 +132,7 @@ class _AddDataState extends State<AddData> {
                           Expanded(
                             child: TextFormField(
                               keyboardType: TextInputType.emailAddress,
+                              validator: validateEmail,
                             ),
                           ),
                         ],
@@ -130,7 +142,7 @@ class _AddDataState extends State<AddData> {
                       height: 20.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
                       child: Row(
                         children: [
                           Text(
@@ -143,6 +155,7 @@ class _AddDataState extends State<AddData> {
                           Expanded(
                             child: TextFormField(
                               keyboardType: TextInputType.phone,
+                              validator: validateContact,
                             ),
                           ),
                         ],
@@ -179,7 +192,24 @@ class _AddDataState extends State<AddData> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AlertDialog(
+                              content: Text('contact saved successfully'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 50.0,
