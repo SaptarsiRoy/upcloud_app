@@ -17,7 +17,7 @@ class DataTile extends StatelessWidget {
         vertical: 40.0,
       ),
       child: Container(
-        height: 250,
+        height: 300,
         width: 300,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
