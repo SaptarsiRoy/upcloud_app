@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:upcloud_app/components/data_button.dart';
+import 'package:upcloud_app/constants.dart';
 
 class AddData extends StatelessWidget {
   static const String id = 'AddData';
@@ -35,11 +36,19 @@ class AddData extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Name:",
-                        //labelStyle: TextStyle()
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Name: ',
+                          style: kLabelTextStyle,
+                        ),
+                        SizedBox(
+                          width: 30.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -47,11 +56,21 @@ class AddData extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "E-mail:",
-                        //labelStyle: TextStyle()
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'E-mail: ',
+                          style: kLabelTextStyle,
+                        ),
+                        SizedBox(
+                          width: 30.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -59,10 +78,21 @@ class AddData extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Contact:",
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Contact: ',
+                          style: kLabelTextStyle,
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.phone,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -70,10 +100,21 @@ class AddData extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Address:",
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Address: ',
+                          style: kLabelTextStyle,
+                        ),
+                        SizedBox(
+                          width: 20.0,
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.streetAddress,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
