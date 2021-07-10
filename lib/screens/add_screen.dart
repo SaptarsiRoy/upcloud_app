@@ -18,6 +18,10 @@ class _AddDataState extends State<AddData> {
   List<DataTile> dataTiles = [];
   bool isShowing = false;
   final _formKey = GlobalKey<FormState>();
+  final nameFieldTextController = TextEditingController();
+  final emailFieldTextController = TextEditingController();
+  final contactFieldTextController = TextEditingController();
+  final addressFieldTextController = TextEditingController();
 
   Future<void> createTiles() async {
     var data = await Network().getData();
@@ -72,7 +76,12 @@ class _AddDataState extends State<AddData> {
                         children: [
                           DataButton(
                             textTitle: 'Add Data',
-                            onPressed: () {},
+                            onPressed: () {
+                              nameFieldTextController.clear();
+                              emailFieldTextController.clear();
+                              contactFieldTextController.clear();
+                              addressFieldTextController.clear();
+                            },
                             backgroundColor: Color(0xFFFFC19E),
                           ),
                           DataButton(
@@ -113,7 +122,9 @@ class _AddDataState extends State<AddData> {
                               width: 30.0,
                             ),
                             Expanded(
-                              child: TextFormField(),
+                              child: TextFormField(
+                                controller: nameFieldTextController,
+                              ),
                             ),
                           ],
                         ),
@@ -134,6 +145,7 @@ class _AddDataState extends State<AddData> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                controller: emailFieldTextController,
                                 keyboardType: TextInputType.emailAddress,
                                 validator: validateEmail,
                               ),
@@ -157,6 +169,7 @@ class _AddDataState extends State<AddData> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                controller: contactFieldTextController,
                                 keyboardType: TextInputType.phone,
                                 validator: validateContact,
                               ),
@@ -180,6 +193,7 @@ class _AddDataState extends State<AddData> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                controller: addressFieldTextController,
                                 keyboardType: TextInputType.streetAddress,
                               ),
                             ),
@@ -195,47 +209,52 @@ class _AddDataState extends State<AddData> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),
                         ),
-                        onPressed: () => _formKey.currentState!.validate()
-                            ? showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  content: Text('data saved successfully'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(
-                                        'ok',
+                        onPressed: () {
+                          _formKey.currentState!.validate()
+                              ? showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    content: Text('data saved successfully'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text(
+                                          'ok',
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  content: Text(
-                                    'There are some errors!',
+                                    ],
                                   ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text('ok'),
+                                )
+                              : showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    content: Text(
+                                      'There are some errors!',
                                     ),
-                                  ],
-                                ),
-                              ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text('ok'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                        },
                         child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 50.0,
-                              vertical: 10.0,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 50.0,
+                            vertical: 10.0,
+                          ),
+                          child: Text(
+                            "Save",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
                             ),
-                            child: Text(
-                              "Save",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                              ),
-                            )),
+                          ),
+                        ),
                       ),
                     ],
                   ),
