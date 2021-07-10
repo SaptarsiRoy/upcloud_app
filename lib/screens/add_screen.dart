@@ -39,7 +39,7 @@ class _AddDataState extends State<AddData> {
     bool emailValidate = RegExp(
             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value.toString());
-    return (emailValidate ? '' : 'Enter a correct email').toString();
+    return (emailValidate ? '' : 'Enter a correct email');
   }
 
   String validateContact(value) {
@@ -60,7 +60,7 @@ class _AddDataState extends State<AddData> {
           children: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.only(top: 60.0),
+                padding: EdgeInsets.only(top: 60.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -99,7 +99,7 @@ class _AddDataState extends State<AddData> {
                       height: 100.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
                       child: Row(
                         children: [
                           Text(
@@ -119,7 +119,7 @@ class _AddDataState extends State<AddData> {
                       height: 20.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
                       child: Row(
                         children: [
                           Text(
@@ -165,7 +165,7 @@ class _AddDataState extends State<AddData> {
                       height: 20.0,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
                       child: Row(
                         children: [
                           Text(
@@ -192,26 +192,22 @@ class _AddDataState extends State<AddData> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AlertDialog(
-                              content: Text('contact saved successfully'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          content: Text('data saved successfully'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                'OK',
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          ],
+                        ),
+                      ),
                       child: Padding(
-                          padding: const EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             horizontal: 50.0,
                             vertical: 10.0,
                           ),
